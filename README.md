@@ -1,1 +1,2 @@
 # SkillStorm Assignments
+Weekly Assignments
