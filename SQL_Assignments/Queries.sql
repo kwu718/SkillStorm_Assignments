@@ -102,7 +102,7 @@ Data should be sorted in ascending order by department_id
 Output should contain all the fields from department and the product count as product_count
 */
 
-SELECT d.department_id as [Department ID], d.department_name[Department Name], COUNT(c.category_department_id) as [Product Count]
+SELECT d.department_id as [Department ID], d.department_name[Department Name], COUNT(product_id) as [Product Count]
 FROM departments d
 LEFT JOIN
 categories c
@@ -130,12 +130,25 @@ products p
 ON c.category_id = p.product_category_id
 ORDER BY c.category_department_id
 
-SELECT * FROM
-orders INNER JOIN order_items
-ON order_id = order_item_order_id
+SELECT * FROM products p
+INNER JOIN
+orders o 
+INNER JOIN 
+order_items oi
+ON order_id = order_item_order_id AND
+format(o.order_date, 'yyyy-MM') LIKE '2014-01%'
+AND (o.order_status = 'COMPLETE' OR o.order_status = 'CLOSED')
+ON oi.order_item_product_id  = p.product_id
+ORDER BY p.product_category_id
 
-SELECT * FROM orders
-ORDER BY order_customer_id
+
+SELECT * FROM 
+orders o 
+INNER JOIN 
+order_items oi
+ON order_id = order_item_order_id AND
+format(o.order_date, 'yyyy-MM') LIKE '2014-01%'
+AND (o.order_status = 'COMPLETE' OR o.order_status = 'CLOSED')
 
 SELECT order_item_order_id, sum(order_item_subtotal)
 FROM order_items
