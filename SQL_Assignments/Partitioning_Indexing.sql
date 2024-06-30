@@ -1,5 +1,3 @@
-
-
 DROP TABLE dbo.orders_parts
 DROP PARTITION SCHEME myRangePS1
 DROP PARTITION FUNCTION myRANGEPF1
@@ -7,9 +5,9 @@ DROP PARTITION FUNCTION myRANGEPF1
 -- Creates Partition Function
 -- Got the min/max months for my lower and upper bounds
 CREATE PARTITION FUNCTION myRangePF1 (datetime2)
-    AS RANGE RIGHT FOR VALUES('2013-08-01', '2013-08-30', '2013-09-30',
-    '2013-10-31','2013-11-30','2013-12-31','2014-01-31', '2014-02-28',
-    '2014-03-31','2014-04-30','2014-05-31', '2014-06-30', '2014-07-31')
+    AS RANGE RIGHT FOR VALUES('2013-08-01', '2013-09-01', '2013-10-01',
+    '2013-11-01','2013-12-01','2014-01-01','2014-02-01', '2014-03-01',
+    '2014-04-01','2014-05-01','2014-06-01', '2014-07-01', '2014-08-01')
 
 -- Creates Partition Scheme
 CREATE PARTITION SCHEME myRangePS1
@@ -22,7 +20,7 @@ CREATE TABLE orders_parts(
     order_id INT NOT NULL,
     order_date DATETIME2 NOT NULL,
     order_customer_id INT NOT NULL,
-    order_status VARCHAR(45) NOT NULL
+    order_astatus VARCHAR(45) NOT NULL
 ) ON myRangePS1(order_date)
 
 -- Loads data into orders_parts
