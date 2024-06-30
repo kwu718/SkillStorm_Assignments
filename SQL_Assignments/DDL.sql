@@ -52,16 +52,35 @@ ADD CONSTRAINT order_item_order_id FOREIGN KEY(order_item_order_id) REFERENCES o
 ALTER TABLE order_items WITH CHECK
 ADD CONSTRAINT order_item_product_id FOREIGN KEY(order_item_product_id) REFERENCES products(product_id)
 
-INSERT INTO categories
-VALUES(8, 'Jersey')
+
+-- Products contain category_id not found in categories
 ALTER TABLE products WITH CHECK
 ADD CONSTRAINT product_category_id FOREIGN KEY(product_category_id) REFERENCES categories(category_id)
 
-INSERT INTO departments(department_name)
-VALUES('Miscellaneous'),
-('Leagues')
+-- Allows product_category_id to be NULL
+ALTER TABLE products
+ALTER COLUMN product_category_id INT NULL
+
+-- Sets any product_category_id not in categories to NULL
+UPDATE products
+SET product_category_id = NULL
+WHERE product_category_id NOT IN(
+   SELECT category_id
+   FROM categories
+)
+
 ALTER TABLE categories WITH CHECK
 ADD CONSTRAINT category_department_id FOREIGN KEY(category_department_id) REFERENCES departments(department_id)
+
+ALTER TABLE categories
+ALTER COLUMN category_department_id INT NULL
+
+UPDATE categories 
+SET category_department_id = NULL
+WHERE category_department_id NOT IN(
+   SELECT department_id 
+   FROM departments
+)
 
 
 SELECT 
