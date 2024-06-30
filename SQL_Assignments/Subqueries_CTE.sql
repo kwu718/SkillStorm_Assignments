@@ -13,10 +13,8 @@ SELECT * FROM orders
 WHERE order_customer_id IN
 (SELECT order_customer_id
 FROM orders
-LEFT JOIN customers
-ON order_customer_id = customer_id
 GROUP BY order_customer_id
-HAVING COUNT(1) > 10)
+HAVING COUNT(order_id) > 10)
 
 -- Exercise 3
 
